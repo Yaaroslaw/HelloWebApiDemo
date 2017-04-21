@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Globalization;
 using System.Web.Http;
 
 namespace HelloWebApiDemo
@@ -11,7 +9,7 @@ namespace HelloWebApiDemo
         public string Get()
         {
             return "Hello from API at " +
-                   DateTime.Now.ToString();
+                   DateTime.Now.ToString(CultureInfo.CurrentCulture);
         }
     }
 }

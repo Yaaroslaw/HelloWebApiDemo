@@ -10,9 +10,9 @@ namespace HelloApiTemplateDemo.Controllers
     [Authorize]
     public class ValuesController : ApiController
     {
-        static List<string> data =initList();
+        static readonly List<string> Data =InitList();
 
-        private static List<string> initList()
+        private static List<string> InitList()
         {
             var ret = new List<string>
             {
@@ -25,31 +25,31 @@ namespace HelloApiTemplateDemo.Controllers
         // GET api/values
         public IEnumerable<string> Get()
         {
-            return data;
+            return Data;
         }
 
         // GET api/values/5
         public string Get(int id)
         {
-            return data[id];
+            return Data[id];
         }
 
         // POST api/values
         public void Post([FromBody]string value)
         {
-            data.Add(value);
+            Data.Add(value);
         }
 
         // PUT api/values/5
         public void Put(int id, [FromBody]string value)
         {
-            data[id] = value;
+            Data[id] = value;
         }
 
         // DELETE api/values/5
         public void Delete(int id)
         {
-            data.RemoveAt(id);
+            Data.RemoveAt(id);
         }
     }
 }
