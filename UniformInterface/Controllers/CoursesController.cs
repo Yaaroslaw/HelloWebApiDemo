@@ -13,25 +13,26 @@ namespace UniformInterface.Controllers
         {
             return Courses;
         }
-
-        public void Post([FromBody]Course c)
+        [HttpPost]
+        public void NewCourse([FromBody]Course c)
         {
             c.Id = Courses.Count;
             Courses.Add(c);
         }
+        [HttpPut]
         public void Put(int id,[FromBody]Course c)
         {
             var course = Get(id);
             course.Title = c.Title;
 
         }
-
-        public void Delete(int id)
+        [HttpDelete]
+        public void RemoveCourse(int id)
         {
 
             Courses.Remove(Get(id));
         }
-
+        [HttpGet]
         public Course Get(int id)
         {
             var ret = (from c in Courses
