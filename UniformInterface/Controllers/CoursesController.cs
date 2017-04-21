@@ -11,18 +11,32 @@ namespace UniformInterface.Controllers
     {
         public IEnumerable<Course> Get()
         {
-            return courses;
+            return Courses;
+        }
+
+        public void Post([FromBody]Course c)
+        {
+            c.Id = Courses.Count;
+            Courses.Add(c);
         }
 
 
-        static readonly List<Course> courses = InitCourses();
+        public Course Get(int id)
+        {
+            var ret = (from c in Courses
+                       where c.Id == id
+                       select c).FirstOrDefault();
+            return ret;
+        }
+
+        static readonly List<Course> Courses = InitCourses();
 
         private static List<Course> InitCourses()
         {
             var ret = new List<Course>
             {
-                new Course {id = 0, title = "WebApi"},
-                new Course {id = 1, title = "MVC"}
+                new Course {Id = 0, Title = "WebApi"},
+                new Course {Id = 1, Title = "MVC"}
             };
             return ret;
 
@@ -31,8 +45,8 @@ namespace UniformInterface.Controllers
 
     public class Course
     {
-        public int id;
-        public string title;
+        public int Id;
+        public string Title;
 
     }
 }
