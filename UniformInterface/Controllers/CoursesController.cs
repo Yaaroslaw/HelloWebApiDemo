@@ -19,7 +19,18 @@ namespace UniformInterface.Controllers
             c.Id = Courses.Count;
             Courses.Add(c);
         }
+        public void Put(int id,[FromBody]Course c)
+        {
+            var course = Get(id);
+            course.Title = c.Title;
 
+        }
+
+        public void Delete(int id)
+        {
+
+            Courses.Remove(Get(id));
+        }
 
         public Course Get(int id)
         {
