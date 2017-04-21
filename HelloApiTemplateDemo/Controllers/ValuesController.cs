@@ -29,15 +29,26 @@ namespace HelloApiTemplateDemo.Controllers
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public HttpResponseMessage Get(int id)
         {
-            return Data[id];
+            if (Data.Count > id)
+                return Request.CreateResponse(HttpStatusCode.OK, Data[id]);
+            else
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Item not found!");
+            {
+                
+            }
+
+
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+        public HttpResponseMessage Post([FromBody]string value)
         {
             Data.Add(value);
+            var msg = Request.CreateResponse(HttpStatusCode.Created);
+            msg.Headers.Location = new Uri(Request.RequestUri + (Data.Count - 1).ToString());
+            return msg;
         }
 
         // PUT api/values/5
