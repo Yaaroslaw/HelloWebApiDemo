@@ -47,18 +47,12 @@ namespace UniformInterface.Controllers
         [HttpGet]
         public HttpResponseMessage Get(int id)
         {
-            HttpResponseMessage msg = null;
+            var  msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Course not found");
             var ret = (from c in Courses
                        where c.Id == id
                        select c).FirstOrDefault();
-            if (ret == null)
-            {
-                msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Course not found");
-            }
-            else
-            {
+            if (ret != null)
                 msg = Request.CreateResponse<Course>(HttpStatusCode.OK, ret);
-            }
             return msg;
         }
 
