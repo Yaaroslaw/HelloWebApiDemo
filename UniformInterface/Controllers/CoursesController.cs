@@ -9,20 +9,30 @@ namespace UniformInterface.Controllers
 {
     public class CoursesController : ApiController
     {
-        public IEnumerable<Course> Get()
+        private Course GetCourse(int id)
+        {
+            var ret = (from c in Courses
+                       where c.Id == id
+                       select c).FirstOrDefault();
+            return ret;
+        }
+        public IEnumerable<Course> AllCourses()
         {
             return Courses;
         }
         [HttpPost]
-        public void NewCourse([FromBody]Course c)
+        public HttpResponseMessage Post([FromBody]Course c)
         {
             c.Id = Courses.Count;
             Courses.Add(c);
+            var msg = Request.CreateResponse(HttpStatusCode.Created);
+            msg.Headers.Location = new Uri(Request.RequestUri + c.Id.ToString());
+            return msg;
         }
         [HttpPut]
         public void Put(int id,[FromBody]Course c)
         {
-            var course = Get(id);
+            var course = GetCourse(id);
             course.Title = c.Title;
 
         }
@@ -30,15 +40,26 @@ namespace UniformInterface.Controllers
         public void RemoveCourse(int id)
         {
 
-            Courses.Remove(Get(id));
+            Courses.Remove(GetCourse(id));
         }
+        
+
         [HttpGet]
-        public Course Get(int id)
+        public HttpResponseMessage Get(int id)
         {
+            HttpResponseMessage msg = null;
             var ret = (from c in Courses
                        where c.Id == id
                        select c).FirstOrDefault();
-            return ret;
+            if (ret == null)
+            {
+                msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Course not found");
+            }
+            else
+            {
+                msg = Request.CreateResponse<Course>(HttpStatusCode.OK, ret);
+            }
+            return msg;
         }
 
         static readonly List<Course> Courses = InitCourses();
